@@ -1,5 +1,4 @@
-addSbtPlugin("com.typesafe.sbtscalariform" % "sbtscalariform" % "0.4.0")
+addSbtPlugin("com.typesafe.sbt" % "sbt-scalariform" % "1.3.0")
 
-libraryDependencies <+= (sbtVersion)(sbtVersion =>
-  "org.scala-sbt" % "scripted-plugin" % sbtVersion
-)
+libraryDependencies += "org.scala-sbt" % "scripted-plugin" % sbtVersion.value
+

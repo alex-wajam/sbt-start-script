@@ -2,12 +2,11 @@ import sbt._
 
 import Keys._
 import Project.Initialize
-import com.typesafe.sbtscalariform.ScalariformPlugin
-import com.typesafe.sbtscalariform.ScalariformPlugin.ScalariformKeys
+import com.typesafe.sbt.SbtScalariform._
+import scalariform.formatter.preferences._
 
 object StartScriptBuild extends Build {
     def formatPrefs = {
-        import scalariform.formatter.preferences._
         FormattingPreferences()
            .setPreference(IndentSpaces, 4)
     }
@@ -18,7 +17,7 @@ object StartScriptBuild extends Build {
     lazy val rootSettings = Defaults.defaultSettings ++
         ScriptedPlugin.scriptedSettings ++
         // formatting
-        ScalariformPlugin.scalariformSettings ++ Seq(
+        Seq(
             ScalariformKeys.preferences in Compile := formatPrefs,
             ScalariformKeys.preferences in Test    := formatPrefs) ++
         Seq(sbtPlugin := true,
@@ -44,11 +43,5 @@ object StartScriptBuild extends Build {
             },
 
             // publish stuff
-            publishTo <<= (version) { v =>
-              def scalasbt(repo: String) = ("scalasbt " + repo, "http://scalasbt.artifactoryonline.com/scalasbt/sbt-plugin-" + repo)
-              val (name, repo) = if (v.endsWith("-SNAPSHOT")) scalasbt("snapshots") else scalasbt("releases")
-              Some(Resolver.url(name, url(repo))(Resolver.ivyStylePatterns))
-            },
-            publishMavenStyle := false,
-            credentials += Credentials(Path.userHome / ".ivy2" / ".sbt-credentials"))
+            publishMavenStyle := true)
 }
